@@ -3,7 +3,12 @@ project(Multiple_View_Modeling)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp)
+file(GLOB SOURCE_FILES
+        "*.h"
+        "*.cpp"
+        "GCO/*.cpp"
+        "GCO/*.h")
+
 add_executable(Multiple_View_Modeling ${SOURCE_FILES})
 
 find_package( OpenCV REQUIRED )
