@@ -149,6 +149,7 @@ extern "C" gcoclock_t GCO_CLOCKS_PER_SEC; // this variable will stay 0 until gco
 #define GCO_ENERGYTYPE GCO_ENERGYTERMTYPE
 #endif
 
+#define ZL_TYPE
 
 /////////////////////////////////////////////////////////////////////
 // GCoptimization class
@@ -157,10 +158,26 @@ class LinkedBlockList;
 
 class GCoptimization
 {
-public: 
+public:
+#ifdef ZL_TYPE
+
 #ifdef GCO_ENERGYTYPE
 	typedef GCO_ENERGYTYPE EnergyType;
 	typedef GCO_ENERGYTERMTYPE EnergyTermType;
+#else
+
+#ifdef GCO_ENERGYTYPE32
+	typedef double EnergyType;        // 32-bit energy total
+#else
+	typedef double EnergyType;  // 64-bit energy total
+#endif
+	typedef double EnergyTermType;    // 32-bit energy terms
+#endif
+
+#else
+#ifdef GCO_ENERGYTYPE
+typedef GCO_ENERGYTYPE EnergyType;
+typedef GCO_ENERGYTERMTYPE EnergyTermType;
 #else
 #ifdef GCO_ENERGYTYPE32
 	typedef int EnergyType;        // 32-bit energy total
@@ -168,6 +185,7 @@ public:
 	typedef long long EnergyType;  // 64-bit energy total
 #endif
 	typedef int EnergyTermType;    // 32-bit energy terms
+#endif
 #endif
 	typedef Energy<EnergyTermType,EnergyTermType,EnergyType> EnergyT;
 	typedef EnergyT::Var VarID;

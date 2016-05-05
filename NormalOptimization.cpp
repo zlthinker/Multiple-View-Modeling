@@ -2,7 +2,7 @@
 // Created by Larry CHOU on 5/4/16.
 //
 
-#include "MultiviewModeling.h"
+#include "NormalOptimization.h"
 #include "GCO/GCoptimization.h"
 
 struct NormDataFn{
@@ -44,11 +44,11 @@ void NormalOptimization(std::vector<cv::Vec3d> & estim_norm, std::vector<cv::Vec
         NormDataFn toFn(estim_norm, label_norm);
 
         gc->setDataCost(& DataFn, & toFn);
-        gc->setSmoothCost(& SmoothFn);
+        gc->setSmoothCost(& SmoothFn, & toFn);
 
-        printf("\nBefore optimization energy is %d",gc->compute_energy());
+        printf("\nBefore optimization energy is %f",gc->compute_energy());
         gc->expansion(2);// run expansion for 2 iterations. For swap use gc->swap(num_iterations);
-        printf("\nAfter optimization energy is %d",gc->compute_energy());
+        printf("\nAfter optimization energy is %f",gc->compute_energy());
 
         for ( int  i = 0; i < num_pixels; i++ )
             results[i] = gc->whatLabel(i);
